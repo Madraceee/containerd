@@ -518,7 +518,7 @@ jobs:
 
   integration-vagrant:
     name: Vagrant integration
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     timeout-minutes: 60
     needs: [project, linters, protos, man]
 
@@ -575,7 +575,7 @@ jobs:
 
   integration-vagrant-v1:
     name: Valgrant integration runc v1
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     timeout-minutes: 60
     needs: [project, linters, protos, man]
 
