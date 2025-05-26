@@ -575,7 +575,7 @@ jobs:
 
   integration-vagrant-v1:
     name: Valgrant integration runc v1
-    runs-on: ubuntu-20.04
+    runs-on: fedora/39-cloud-base
     timeout-minutes: 60
     needs: [project, linters, protos, man]
 
