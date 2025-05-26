@@ -611,9 +611,11 @@ jobs:
           sudo sed -i 's/^# deb-src/deb-src/' /etc/apt/sources.list
           sudo apt-get update
           sudo apt-get -y install gcc make linux-headers-$(uname -r) dkms
-          sudo apt install ./virtualbox-5.2_5.2.44-139111~Ubuntu~bionic_amd64.deb
+          sudo curl https://download.virtualbox.org/virtualbox/7.1.8/virtualbox-7.1_7.1.8-168469~Ubuntu~jammy_amd64.deb
+          sudo apt install ./virtualbox-7.1_7.1.8-168469~Ubuntu~jammy_amd64.deb
+          sudo curl https://download.virtualbox.org/virtualbox/7.1.8/Oracle_VirtualBox_Extension_Pack-7.1.8.vbox-extpack
           sudo VBoxManage extpack install ./Oracle_VM_VirtualBox_Extension_Pack-5.2.44.vbox-extpack
-          sudo apt-get install -y  vagrant
+          sudo apt-get install -y vagrant
       - name: Boot VM
         run: sudo RUNC_RUNTIME=$RUNTIME BOX=$BOX vagrant up --no-tty
       - name: test-integration-v1
