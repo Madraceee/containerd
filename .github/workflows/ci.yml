@@ -607,16 +607,13 @@ jobs:
       - name: Set up vagrant
         run: |
           curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-          echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
           sudo sed -i 's/^# deb-src/deb-src/' /etc/apt/sources.list
           sudo apt-get update
-          sudo apt-get install -y libvirt-daemon libvirt-daemon-system vagrant ovmf
-          # https://github.com/vagrant-libvirt/vagrant-libvirt/issues/1725#issuecomment-1454058646
-          sudo cp /usr/share/OVMF/OVMF_VARS_4M.fd /var/lib/libvirt/qemu/nvram/
-          sudo systemctl enable --now libvirtd
-          sudo apt-get build-dep -y vagrant ruby-libvirt
-          sudo apt-get install -y --no-install-recommends libxslt-dev libxml2-dev libvirt-dev ruby-bundler ruby-dev zlib1g-dev
-          sudo env VAGRANT_DISABLE_STRICT_DEPENDENCY_ENFORCEMENT=1 vagrant plugin install vagrant-libvirt
+          sudo apt-get -y install gcc make linux-headers-$(uname -r) dkms
+          sudo apt install ./virtualbox-5.2_5.2.44-139111~Ubuntu~bionic_amd64.deb
+          sudo VBoxManage extpack install ./Oracle_VM_VirtualBox_Extension_Pack-5.2.44.vbox-extpack
+          sudo apt-get install -y  vagrant
       - name: Boot VM
         run: sudo RUNC_RUNTIME=$RUNTIME BOX=$BOX vagrant up --no-tty
       - name: test-integration-v1
